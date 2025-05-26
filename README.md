@@ -88,3 +88,31 @@ goes against the 'use your own backend' philosophy, I'm open to work with
 what's available and work on this anyway.
 
 The full list of open tasks is, of course, in a [To-do-formatted plain text file](noot.todo.txt).
+
+# Support
+
+Like this app? 
+
+[<img src="resources/support_me_on_kofi_blue.png" width="200" alt="Support me on Ko-fi" />](https://ko-fi.com/mathijsl)
+
+# License
+
+This project uses the GNU GPLv3 license. See COPYING for the license in full.
+
+```
+Noot. Note-taking and todo-list app.
+Copyright (C) 2025  Mathijs Lagerberg
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+```
