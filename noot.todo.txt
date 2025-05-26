@@ -1,0 +1,332 @@
+
+=== TO DO ===
+
+To do list for Noot.
+
+
+# Tasks
+
+[ ] Cleanup code
+    - documentation
+    - write tests
+[ ] Open source it
+[ ] Publish on fdroid
+
+
+# Tweaks
+
+[v] background color for large black panel on tablet layouts when no file is open
+[v] Move overflow menu on To-do entries to the left in tablet mode, because the lines are long
+[v] In file list "Remove" should be "Remove from list" to indicate that file is not deleted
+[v] Add small headers in file list: Pinned, Files, Folders
+[v] App icon is very dark and boring
+[v] refresh icon should be yellow, not red
+
+
+# Features
+
+[ ] Autosave
+    - instead of autosaving on exit, as previously implemented, save automatically every x seconds. We have undo/redo now, so it is fine.
+[ ] Undo/redo the 'reload from disk' operation.
+[ ] Allow more control over text editor per file:
+    - syntax highlighting on/off
+    - choose markdown/journal/todo format per extension.
+[ ] Rich text editor features:
+    - Auto-insert curly quotes
+    - Show buttons for bold, italic, headers, quotes, tabs, curly quotes, etc.
+    ? Auto-convert typing ** or __ to bold and italics
+[ ] Search function
+    - Add search function to To-do mode
+    ~ Improve search UI for text mode
+    - Add search to Rich text mode
+[v] undo/redo in all modes
+    v implement in To-do mode
+    v enable somehow in text mode
+    v flip _enableUndoRedo in markdown mode
+    v buttons should be in appbar, not as extra bar above editor
+[ ] Consider supporting nested folders in the sidebar
+
+
+# Replacing Code editor considerations
+
+[ ] Pros:
+    - Slow, even with markdown syntax disabled
+    - Undo/redo does not work properly, e.g. typing newlines is not detected as an edit action
+    - Undo/redo does not show size of stack (determines if buttons should be enabled or not)
+    - Would be nice to be able to toggle word wrap on and off
+[ ] Cons:
+    - We have a (sort of) syntax highlighting done for To-do format
+    - Not sure if there are other viable options.
+[ ] Alternatives:
+    x code_editor: ^2.1.0 -> by default shows a highlighter and edit mode separately. Editor comes with a lot of fluff around it.
+    - web-based?
+
+
+# Bugs
+
+[ ] super-editor saves tab indents as 2 spaces. Serializing a deserialized file without editing it, changes the file.
+[ ] super-editor can't insert a single linebreak (always creates new paragraph).
+[ ] Custom syntax highlighter is incomplete. Parent tasks don't influence their kids.
+[v] After creating a file, it doesn't open automatically because permissions are not granted.
+[x] Android desktop mode or windowed mode, has the captionBar overlap with the appbar
+    - not sure if fixable without changes by Flutter:
+    - https://docs.flutter.dev/release/breaking-changes/default-systemuimode-edge-to-edge
+    - https://github.com/flutter/flutter/issues/150374
+    v tried it, still doesn't work
+
+
+# Code improvements
+
+[ ] Use a provider for the FileManager (`master_detail_container.dart:48`)
+[ ] `start_screen`  contains magic strings to communicate with `MainActivity.kt`
+[ ] Many magic strings in `file_io_manager.dart`
+[ ] Saving and restoring selection in the rich text editor requires storing node ID and more
+[ ] Swipe gesture in To-do editor could be improved so the animation does not flip back too soon
+[ ] Deleting the last entry inserts a blank new one, which adds another action in the undo stack.
+[ ] Use proper routing to prevent issues with accessing context across sync gaps
+    - Consider GetX
+    - Or make a simple navigator service (https://medium.com/flutter-community/navigate-without-context-in-flutter-with-a-navigation-service-e6d76e880c1c)
+
+--------------------------------------------------------------------------------
+
+# CHANGELOG
+
+### 1.2.3+27
+
+[v] Bugs
+    - Inserting next day would often insert entry dated a week ago
+[v] Tweaks
+    - Slight performance improvement by disabling code folding calculations.
+
+
+### 1.2.2+26
+
+[v] Bugfixes
+    - after dragging an item, dragging another one would not bring along its child items
+    - filename titles got cut off instead of fading
+    - folder icons not rounded yet
+[v] UI change
+    - icons added to edit mode dialog
+
+
+### 1.2.1+25
+
+[v] Bugfixes
+    - After creating a file, it doesn't open automatically
+
+
+### 1.2.0+24
+
+[v] Rename to Noot.
+
+
+### 1.1.11+23
+
+[v] New feature
+    - Customizable date format
+[v] Fixed
+    - Wrong sync icon
+    - Disabled the inline autocomplete again
+
+
+### 1.1.10+22
+
+[v] New features
+    - Date pickers so you don't have to type dates
+    - First draft of todo syntax highlighting in text mode
+    - Quick option to insert next day (including week separators and empty lines)
+[v] Tweaks
+    - All rounded icons
+    - Date now bold
+    - File extension highlight now dims `.todo.txt` entirely.
+    - Allowed re-adding folders that are already added, so they can refresh
+    - Added refresh button too
+[v] Bugs
+    - Reordering an item would not enable the Undo button or the save button
+
+
+### 1.1.9+21
+
+[v] Features
+    - Support for the new date format (lines that start with %)
+[v] Tweaks
+    - Starting a text line with #, --- or % now updates the type of entry to the associated type.
+    - Removed "paste above" because there's no "insert above" either (except for the first entry)
+[v] Bugs
+    - All snackbar messages shown double in tablet mode
+    - Pasting text could crash the app
+
+
+### 1.1.8+20
+
+[v] Features
+    v Cut/copy/paste in Todo-mode editor
+    v Undo/redo in Todo-mode editor
+
+
+### 1.1.7+19
+
+[v] Fixed
+    v Previous update broke the file list layout for small screens.
+    v Creating a new file with extension `.md` would append a second extension `.txt`
+    v Codeblocks in markdown should have monospace font
+    v Caret in text editor was still white on bright
+    v Removed dark gutter on the left of text editor in bright mode
+
+
+### 1.1.6+18
+
+[v] Added
+    v Option to turn of sorting by last opened
+[v] Changed
+    v Font sizes for headers
+    v No more inverted text fields in dialogs
+[v] Fixed
+    v wrong caret colors in markdown editor
+    v black text on black in filename dialog
+    v start screen bottom buttons don't fit on Pixel Fold
+
+
+### 1.1.5+17
+
+[v] Fixed
+    - Autocorrect disabled in markdown mode
+    - Text icon in light mode was white on white
+
+
+### 1.1.4+16
+
+[v] Light theme improvements
+[v] Beta feature
+    - Send files to app
+
+
+### 1.1.3+15
+
+[v] Tweaks
+    v Expanded overflow menu in tablet layout
+[v] Fixed
+    v Typeface in list items was different from paragraphs in markdown mode
+
+
+### 1.1.2+14
+
+[v] Features
+    v Light mode and auto theme mode
+
+
+### 1.1.1+13
+
+[v] Features
+    v Collapse folders
+    v Collapse/expand sidebar
+
+
+### 1.1.0+12
+
+[v] Features
+    v Rich text editor for markdown files
+    v Light mode (for rich text only)
+
+
+### 1.0.10+11
+
+[v] Features
+    - Settings screen
+
+
+### 1.0.9+10
+
+[v] Features
+    - Enter key now closes the dialog instead of adding newlines, since newlines are not
+      automatically compatible with the TODO format.
+    - Larger dialog in tablet mode
+[v] Fixed
+    - Dialog box was VERY round
+    - Swipe to discard was still too sensitive
+    - When the start screen is empty, bottom bar was pushed upwards
+
+
+### 1.0.8+9
+
+[v] Features
+    - Added 'Insert subtask' in dropdown on tasks
+    - Open keyboard immediately when opening task dialog
+    - Brought back ordering by last opened, for regular files
+[v] Bugs
+    ? Slow text editor
+    - Scroll position often wrong when opening file
+    - Reordering with child items often incorrect
+    - Reordering a subtask to a new parent did not update the color
+    - Reordering a task did not add new subtasks that followed after the ordering
+    - Swipe gesture would trigger the dismissible action
+
+
+### 1.0.7+8
+
+[v] Bugs
+    - http:// links with @ in it, show up orange
+    - crossed-out tasks also still contain highlights
+    - new subtask does not inherit parent state
+    - Control+S was not working
+    - Reordering to the end of the list would crash
+    - Reordering down would reorder to 1 row too low
+
+
+### 1.0.6+7
+
+[v] Improvements
+    - Disabled autocorrect and autocapitalization when entering filename
+    - Reordering a task in todo mode now includes its subtasks
+    - Respond to Ctrl+S to save
+[v] Bugs
+    - Reordering an item had a white background
+    - Word wrap not working in editor mode
+
+
+### 1.0.5+6
+
+[v] Features
+    - Open folders
+
+
+### 1.0.4+5
+
+[v] Features
+    - Save caret and selection in the editor
+[v] Bugs
+    - Current file was not highlighted in start screen
+    - Sidebar not refreshing right away
+    - Changing an entry to a task would show wrong circle color and not save it correctly to file.
+    - Indented text shows up as task
+    - Fixed encoding errors: utf8 files loaded from content resolver into utf16 strings, resulting in incorrect characters
+    - Creating a new file triggers the 'file deleted' popup
+    - When file is deleted or modified, it shows the warning popup every few seconds.
+
+
+### 1.0.3+4
+
+[v] Features
+    - Text editor mode
+[v] Bugs
+    - on tablet, scroll position was only saved when discard/save dialog showed
+    - on tablet, all snackbars showed in list and in editor
+    - file monitoring also triggered for edits made from within the app
+
+
+### 1.0.2+3
+
+[v] Tablet layout
+[v] observe open files for changes
+
+
+### 1.0.1+2 (2024-09-25)
+
+[v] Bugs
+    v Back gesture triggers the scrollbar
+    v Creating new file could fail and writes 0 byte file.
+[v] Features
+    v When inserting a new task, automatically open the edit dialog
+    v Added option in dropdown to just add a blank line
+    v Swipe to mark as done/undone, and to delete
+    v Drag to reorder
