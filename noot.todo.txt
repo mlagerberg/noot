@@ -91,7 +91,7 @@ To do list for Noot.
 
 # CHANGELOG
 
-### 1.2.3+27
+### 1.2.4+28
 
 [v] Bugfix: text mode would show empty editor
 
