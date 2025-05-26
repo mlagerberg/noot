@@ -100,8 +100,8 @@ class TextEditorState extends AbstractEditorState {
                       : GutterStyle.none,
                   controller: _controller,
                   maxLines: null,
-                  expands: true,
                   wrap: _wrap,
+                  textStyle: theme.textTheme.bodyMedium,
                   onChanged: (content) {
                     widget.onChanged();
                   },
