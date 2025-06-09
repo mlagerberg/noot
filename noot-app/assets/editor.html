@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="codemirror/codemirror.css"/>
+    <link rel="stylesheet" href="codemirror/monokai.css"/>
+    <script src="codemirror/codemirror.js"></script>
+    <script src="codemirror/markdown.js"></script>
+    <style>
+        html, body { margin: 0; height: 100%; }
+        .CodeMirror { height: 100%; font-family: monospace; font-size: 14px; }
+    </style>
+</head>
+<body>
+<textarea id="editor">Loading...</textarea>
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+      lineNumbers: true,
+      mode: {
+        name: "markdown",
+        htmlMode: true
+      }
+    });
+    editor.setOption("theme", 'monokai');
+
+    function setValue(text) {
+      console.log(text);
+      editor.setValue(decodeURI(text));
+    }
+
+    function getValue() {
+      return encodeURI(editor.getValue());
+    }
+</script>
+</body>
+</html>

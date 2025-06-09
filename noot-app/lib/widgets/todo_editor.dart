@@ -238,7 +238,7 @@ class TodoEditorState extends AbstractEditorState {
   }
 
   @override
-  String getContent() {
+  Future<String> getContent() async {
     final formatter = Formatter();
     final content = entries.map((e) => formatter.entryToString(e)).join('\n');
     return content;

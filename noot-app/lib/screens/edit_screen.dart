@@ -201,7 +201,7 @@ class EditScreenState extends State<EditScreen> with WidgetsBindingObserver {
     }
 
     try {
-      final String content = currentEditorState?.getContent() ?? '';
+      final String content = await currentEditorState?.getContent() ?? '';
 
       // Tell the monitor to ignore the next change
       _fileMonitor?.ignoreNextChange();

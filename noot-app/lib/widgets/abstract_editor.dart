@@ -57,7 +57,7 @@ abstract class AbstractEditorState extends State<AbstractEditor>
   void reset();
 
   /// Returns the content of the editor as a [String].
-  String getContent();
+  Future<String> getContent() async => '';
 
   @override
   bool supportsUndoRedo() => false;

@@ -126,7 +126,7 @@ class MarkdownEditorState extends AbstractEditorState {
   }
 
   @override
-  String getContent() {
+  Future<String> getContent() async {
     return _editor == null
         ? ''
         : serializeDocumentToMarkdown(_editor!.context.document);
