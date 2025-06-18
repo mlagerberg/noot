@@ -8,6 +8,7 @@ import 'package:todo/theme/state_colors.dart';
 import 'package:todo/utils/todo_syntax.dart';
 import 'package:todo/widgets/abstract_editor.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 /// Editor for plain text or code.
 /// Shows a monospaces text editor with optional syntax highlighting
@@ -64,6 +65,7 @@ class TextEditorState extends AbstractEditorState {
   initState() {
     super.initState();
     _controller = WebViewController()
+      ..enableZoom(false)
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
@@ -89,6 +91,11 @@ class TextEditorState extends AbstractEditorState {
         ),
       )
       ..loadFlutterAsset('assets/editor.html');
+
+    // AndroidWebViewController.enableDebugging(true);
+    // (_controller.platform as AndroidWebViewController)
+    //     ..setMediaPlaybackRequiresUserGesture(false)
+    // ..set;
   }
 
   @override
@@ -161,7 +168,7 @@ class TextEditorState extends AbstractEditorState {
       //   _controller.selection =
       //       TextSelection(baseOffset: start, extentOffset: end);
       // }
-      textEditorFocusNode.requestFocus();
+      // textEditorFocusNode.requestFocus();
     });
   }
 
