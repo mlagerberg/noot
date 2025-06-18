@@ -23,8 +23,11 @@ class EditModeDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context, EditMode.todo);
           },
-          child:
-              Row(children: [Icon(Icons.list_rounded), Text(locale.mode_todo)]),
+          child: Row(children: [
+            Icon(Icons.circle_outlined),
+            SizedBox(width: 8),
+            Text(locale.mode_todo)
+          ]),
         ),
         SimpleDialogOption(
           onPressed: () {
@@ -32,6 +35,7 @@ class EditModeDialog extends StatelessWidget {
           },
           child: Row(children: [
             Icon(Icons.text_snippet_rounded),
+            SizedBox(width: 8),
             Text(locale.mode_text)
           ]),
         ),
@@ -40,7 +44,8 @@ class EditModeDialog extends StatelessWidget {
             Navigator.pop(context, EditMode.markdown);
           },
           child: Row(children: [
-            Icon(Icons.text_fields_rounded),
+            Icon(Icons.format_size_outlined),
+            SizedBox(width: 8),
             Text(locale.mode_markdown)
           ]), // Add more options as needed
         ),
