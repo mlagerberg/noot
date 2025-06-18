@@ -9,7 +9,7 @@ To do list for Noot.
 [ ] Cleanup code
     - documentation
     - write tests
-[ ] Open source it
+[v] Open source it
 [ ] Publish on fdroid
 
 
@@ -57,9 +57,9 @@ To do list for Noot.
 [ ] Cons:
     - We have a (sort of) syntax highlighting done for To-do format
     - Not sure if there are other viable options.
-[ ] Alternatives:
+[v] Alternatives:
     x code_editor: ^2.1.0 -> by default shows a highlighter and edit mode separately. Editor comes with a lot of fluff around it.
-    - web-based?
+    v web-based?
 
 
 # Bugs
@@ -90,6 +90,11 @@ To do list for Noot.
 --------------------------------------------------------------------------------
 
 # CHANGELOG
+
+### 1.2.5+29 (Beta)
+
+[v] Replace slow editor with web-based one (CodeMirror)
+
 
 ### 1.2.4+28
 
