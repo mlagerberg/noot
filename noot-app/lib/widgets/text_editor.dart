@@ -21,45 +21,32 @@ class TextEditor extends AbstractEditor {
   TextEditorState createState() => TextEditorState();
 }
 
-/// Analyzer that does nothing, because we need to pass something to the
-/// CodeController.
-class NullAnalyzer extends AbstractAnalyzer {
-  NullAnalyzer();
-
-  final nothing = AnalysisResult(issues: []);
-
-  @override
-  Future<AnalysisResult> analyze(Code code) async {
-    return nothing;
-  }
-}
-
 /// State class for [TextEditor].
 class TextEditorState extends AbstractEditorState {
 
   final FocusNode textEditorFocusNode = FocusNode();
 
-  final _enableUndoRedo = false;
-
   late WebViewController _controller;
   bool _ready = false;
   // Holds the content in case the editor is not ready
   String? _content;
+  bool _canUndo = false;
+  bool _canRedo = false;
 
-  // @override
-  // bool supportsUndoRedo() => _enableUndoRedo;
-  //
-  // @override
-  // bool canUndo() => true;
-  //
-  // @override
-  // bool canRedo() => true;
-  //
-  // @override
-  // void undo() => _controller.runJavaScript("undo()");
-  //
-  // @override
-  // void redo() => _controller.runJavaScript("redo()");
+  @override
+  bool supportsUndoRedo() => true;
+
+  @override
+  bool canUndo() => _canUndo;
+
+  @override
+  bool canRedo() => _canRedo;
+
+  @override
+  void undo() => _controller.runJavaScript("undo()");
+
+  @override
+  void redo() => _controller.runJavaScript("redo()");
 
   @override
   initState() {
@@ -89,6 +76,14 @@ class TextEditorState extends AbstractEditorState {
             return NavigationDecision.prevent;
           },
         ),
+      )
+      ..addJavaScriptChannel(
+        'change_notifier',
+        onMessageReceived: (JavaScriptMessage message) async {
+          _canUndo = (await _controller.runJavaScriptReturningResult('canUndo()')) as bool;
+          _canRedo = (await _controller.runJavaScriptReturningResult('canRedo()')) as bool;
+          widget.onChanged();
+        },
       )
       ..loadFlutterAsset('assets/editor.html');
 
@@ -169,6 +164,7 @@ class TextEditorState extends AbstractEditorState {
       //       TextSelection(baseOffset: start, extentOffset: end);
       // }
       // textEditorFocusNode.requestFocus();
+
     });
   }
 

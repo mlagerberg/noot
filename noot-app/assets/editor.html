@@ -25,14 +25,28 @@
       }
     });
     editor.setOption("theme", 'monokai');
+    editor.on('change', function(instance, changeObj) {
+      change_notifier.postMessage("changed");
+    });
 
     function setValue(text) {
       console.log(text);
       editor.setValue(decodeURI(text));
     }
-
     function getValue() {
       return encodeURI(editor.getValue());
+    }
+    function undo() {
+        editor.undo();
+    }
+    function redo() {
+        editor.redo();
+    }
+    function canUndo() {
+        return editor.historySize().undo > 0;
+    }
+    function canRedo() {
+        return editor.historySize().redo > 0;
     }
 </script>
 </body>
