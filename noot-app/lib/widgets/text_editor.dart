@@ -2,13 +2,9 @@ import 'dart:convert';
 
 import 'package:content_resolver/content_resolver.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_code_editor/flutter_code_editor.dart';
-import 'package:highlight/languages/markdown.dart';
 import 'package:todo/theme/state_colors.dart';
-import 'package:todo/utils/todo_syntax.dart';
 import 'package:todo/widgets/abstract_editor.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 /// Editor for plain text or code.
 /// Shows a monospaces text editor with optional syntax highlighting
@@ -28,10 +24,13 @@ class TextEditorState extends AbstractEditorState {
 
   late WebViewController _controller;
   bool _ready = false;
+
   // Holds the content in case the editor is not ready
   String? _content;
   bool _canUndo = false;
   bool _canRedo = false;
+  // First change is loading the content. Ignore that.
+  bool _firstChangeIgnored = false;
 
   @override
   bool supportsUndoRedo() => true;
@@ -43,10 +42,22 @@ class TextEditorState extends AbstractEditorState {
   bool canRedo() => _canRedo;
 
   @override
-  void undo() => _controller.runJavaScript("undo()");
+  void undo() async {
+    await _controller.runJavaScript("undo()");
+    _canUndo =
+    (await _controller.runJavaScriptReturningResult('canUndo()')) as bool;
+    _canRedo =
+    (await _controller.runJavaScriptReturningResult('canRedo()')) as bool;
+  }
 
   @override
-  void redo() => _controller.runJavaScript("redo()");
+  void redo() async {
+    await _controller.runJavaScript("redo()");
+    _canUndo =
+    (await _controller.runJavaScriptReturningResult('canUndo()')) as bool;
+    _canRedo =
+    (await _controller.runJavaScriptReturningResult('canRedo()')) as bool;
+  }
 
   @override
   initState() {
@@ -80,9 +91,17 @@ class TextEditorState extends AbstractEditorState {
       ..addJavaScriptChannel(
         'change_notifier',
         onMessageReceived: (JavaScriptMessage message) async {
-          _canUndo = (await _controller.runJavaScriptReturningResult('canUndo()')) as bool;
-          _canRedo = (await _controller.runJavaScriptReturningResult('canRedo()')) as bool;
-          widget.onChanged();
+          if (_firstChangeIgnored) {
+            _canUndo =
+            (await _controller.runJavaScriptReturningResult(
+                'canUndo()')) as bool;
+            _canRedo =
+            (await _controller.runJavaScriptReturningResult(
+                'canRedo()')) as bool;
+            widget.onChanged();
+          } else {
+            _firstChangeIgnored = true;
+          }
         },
       )
       ..loadFlutterAsset('assets/editor.html');
@@ -100,9 +119,9 @@ class TextEditorState extends AbstractEditorState {
     return Theme(
       data: ThemeData(
           inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: colors.background,
-      )),
+            filled: true,
+            fillColor: colors.background,
+          )),
       child: WebViewWidget(controller: _controller),
     );
   }
@@ -151,7 +170,7 @@ class TextEditorState extends AbstractEditorState {
   @override
   List<int> getSelection() {
     // return [_controller.selection.start, _controller.selection.end];
-    return [0,0];
+    return [0, 0];
   }
 
   @override
@@ -176,7 +195,8 @@ class TextEditorState extends AbstractEditorState {
 
   @override
   Future<String> getContent() async {
-    final content = (await _controller.runJavaScriptReturningResult('getValue()')) as String;
+    final content = (await _controller.runJavaScriptReturningResult(
+        'getValue()')) as String;
     return Uri.decodeFull(content);
   }
 }
