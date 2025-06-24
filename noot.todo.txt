@@ -91,6 +91,11 @@ To do list for Noot.
 
 # CHANGELOG
 
+### 1.2.6+30 (Beta)
+
+[v] Bugfix:
+    - restore original line endings when saving in markdown mode
+
 ### 1.2.5+29 (Beta)
 
 [v] Replace slow editor with web-based one (CodeMirror)
