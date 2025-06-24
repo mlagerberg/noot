@@ -25,6 +25,7 @@ class MarkdownEditorState extends AbstractEditorState {
 
   late final MutableDocumentComposer _composer;
   Editor? _editor;
+  bool _hasLinefeeds = false;
 
   final _enableUndoRedo = true;
 
@@ -57,7 +58,10 @@ class MarkdownEditorState extends AbstractEditorState {
     final title = content.fileName ?? locale.untitled;
 
     setState(() {
-      final document = deserializeMarkdownToDocument(utf8.decode(content.data));
+      final contentStr = utf8.decode(content.data);
+      // Remember if we should restore the original linebreaks.
+      _hasLinefeeds = contentStr.contains('\n\r');
+      final document = deserializeMarkdownToDocument(contentStr);
       document.addListener(_onDocumentChange);
       _editor = createDefaultDocumentEditor(
         document: document,
@@ -127,9 +131,14 @@ class MarkdownEditorState extends AbstractEditorState {
 
   @override
   Future<String> getContent() async {
-    return _editor == null
-        ? ''
-        : serializeDocumentToMarkdown(_editor!.context.document);
+    if (_editor == null) {
+      return '';
+    }
+    final contentStr = serializeDocumentToMarkdown(_editor!.context.document);
+    if (!_hasLinefeeds) {
+      return contentStr.replaceAll('\n\r', '\n');
+    }
+    return contentStr;
   }
 
   /// Several customizations over the default styles of the editor.
